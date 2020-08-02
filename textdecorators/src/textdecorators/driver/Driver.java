@@ -1,5 +1,12 @@
 package textdecorators.driver;
 
+import textdecorators.AbstractTextDecorator;
+import textdecorators.KeywordDecorator;
+import textdecorators.MostFrequentWordDecorator;
+import textdecorators.SentenceDecorator;
+import textdecorators.SpellCheckDecorator;
+import textdecorators.util.InputDetails;
+
 public class Driver {
 
   private static final int REQUIRED_NUMBER_OF_CMDLINE_ARGS = 5;
@@ -18,5 +25,17 @@ public class Driver {
     }
 
     System.out.println("hello world!");
+
+    InputDetails inputD = new InputDetails(args[0], args[1], args[2], args[3]);
+
+    AbstractTextDecorator sentenceDecorator = new SentenceDecorator(null, inputD);
+    AbstractTextDecorator spellCheckDecorator = new SpellCheckDecorator(sentenceDecorator, inputD);
+    AbstractTextDecorator keywordDecorator = new KeywordDecorator(spellCheckDecorator, inputD);
+    AbstractTextDecorator mostFrequentWordDecorator =
+        new MostFrequentWordDecorator(keywordDecorator, inputD);
+
+    mostFrequentWordDecorator.processInputDetails();
+
+    inputD.write();
   }
 }
