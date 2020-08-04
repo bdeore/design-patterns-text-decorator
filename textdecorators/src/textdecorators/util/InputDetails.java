@@ -11,11 +11,10 @@ import textdecorators._exceptions.InvalidWordException;
 public class InputDetails implements FileDisplayInterface, StdoutDisplayInterface {
 
   private final String inputFile;
+  private final ArrayList<ArrayList<String>> reference;
   private final String misspelledWordsFile;
   private final String keywordsFile;
   private final String outputFile;
-  private final ArrayList<ArrayList<String>> reference;
-  private final Set<String> keywords;
   private final Set<String> misspelledWords;
   private ArrayList<ArrayList<String>> result;
 
@@ -27,7 +26,6 @@ public class InputDetails implements FileDisplayInterface, StdoutDisplayInterfac
     this.outputFile = outputFile;
     this.result = new ArrayList<>();
     this.reference = new ArrayList<>();
-    keywords = new HashSet<>();
     misspelledWords = new HashSet<>();
   }
 
@@ -44,9 +42,14 @@ public class InputDetails implements FileDisplayInterface, StdoutDisplayInterfac
         String[] words = sentence.split("[\\s]+");
 
         ArrayList<String> temp = new ArrayList<>();
+        ArrayList<String> temp1 = new ArrayList<>();
+
         for (String word : words) {
-          if (word.matches("[a-zA-Z0-9,\\s]*")) temp.add(word);
-          else {
+          if (word.matches("[a-zA-Z0-9,\\s]*")) {
+            temp.add(word);
+            temp1.add(word);
+
+          } else {
             throw new InvalidWordException(
                 "[ Line Number "
                     + count
@@ -55,9 +58,10 @@ public class InputDetails implements FileDisplayInterface, StdoutDisplayInterfac
                     + " ] Please Ensure Input File contains Valid Lines");
           }
         }
-
-        result.add(temp);
         reference.add(temp);
+        temp1.set(0, "BEGIN_SENTENCE__" + temp1.get(0));
+        temp1.set((temp1.size() - 1), temp1.get(temp1.size() - 1) + "__END_SENTENCE.");
+        result.add(temp1);
       }
       line = inputFP.poll();
     }
@@ -76,8 +80,19 @@ public class InputDetails implements FileDisplayInterface, StdoutDisplayInterfac
       for (String word : sentence) {
         System.out.print(" " + word);
       }
-      System.out.print(".");
     }
+  }
+
+  public ArrayList<ArrayList<String>> getReference() {
+    return reference;
+  }
+
+  public String getMisspelledWordsFile() {
+    return misspelledWordsFile;
+  }
+
+  public String getKeywordsFile() {
+    return keywordsFile;
   }
 
   @Override

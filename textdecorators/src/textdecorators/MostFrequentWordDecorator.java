@@ -19,8 +19,9 @@ public class MostFrequentWordDecorator extends AbstractTextDecorator {
 
   @Override
   public void processInputDetails() {
-
     String mostFrequentWord = findMostFrequentWord();
+    System.out.println();
+    System.out.println(mostFrequentWord);
     updateResults(mostFrequentWord);
 
     if (null != atd) {
@@ -29,19 +30,33 @@ public class MostFrequentWordDecorator extends AbstractTextDecorator {
   }
 
   private void updateResults(String mostFrequentWord) {
-    for (ArrayList<String> sentence : id.getResult()) {
-      for (int i = 0; i < sentence.size(); i++) {
-        String word = sentence.get(i);
-        if (word.toLowerCase().equals(mostFrequentWord)) {
+    //    for (ArrayList<String> sentence : id.getResult()) {
+    //      for (int i = 0; i < sentence.size(); i++) {
+    //        String word = sentence.get(i);
+    //        if (word.toLowerCase().equals(mostFrequentWord)) {
+    //          word = "MOST_FREQUENT_" + word + "_MOST_FREQUENT";
+    //          sentence.set(i, word);
+    //        }
+    //      }
+    //    }
+
+    ArrayList<ArrayList<String>> reference = id.getReference();
+    ArrayList<ArrayList<String>> results = id.getResult();
+
+    for (int i = 0; i < reference.size(); i++) {
+      ArrayList<String> sentence = results.get(i);
+      for (int j = 0; j < sentence.size(); j++) {
+        String word = sentence.get(j);
+        if (word.toLowerCase().equals(mostFrequentWord.toLowerCase())) {
           word = "MOST_FREQUENT_" + word + "_MOST_FREQUENT";
-          sentence.set(i, word);
+          sentence.set(j, word);
         }
       }
     }
   }
 
   private String findMostFrequentWord() {
-    ArrayList<ArrayList<String>> sentences = id.getResult();
+    ArrayList<ArrayList<String>> sentences = id.getReference();
 
     for (ArrayList<String> sentence : sentences) {
       for (String word : sentence) {
