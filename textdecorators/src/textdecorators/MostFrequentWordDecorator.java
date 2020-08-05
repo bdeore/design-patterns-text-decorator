@@ -44,12 +44,15 @@ public class MostFrequentWordDecorator extends AbstractTextDecorator {
     ArrayList<ArrayList<String>> results = id.getResult();
 
     for (int i = 0; i < reference.size(); i++) {
-      ArrayList<String> sentence = results.get(i);
+      ArrayList<String> sentence = reference.get(i);
+      ArrayList<String> modifiedSentence = results.get(i);
+
       for (int j = 0; j < sentence.size(); j++) {
         String word = sentence.get(j);
+        String newWord = modifiedSentence.get(j);
         if (word.toLowerCase().equals(mostFrequentWord.toLowerCase())) {
-          word = "MOST_FREQUENT_" + word + "_MOST_FREQUENT";
-          sentence.set(j, word);
+          newWord = "MOST_FREQUENT_" + newWord + "_MOST_FREQUENT";
+          modifiedSentence.set(j, newWord);
         }
       }
     }

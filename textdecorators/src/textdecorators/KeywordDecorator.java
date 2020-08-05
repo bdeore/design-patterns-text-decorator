@@ -35,12 +35,14 @@ public class KeywordDecorator extends AbstractTextDecorator {
     ArrayList<ArrayList<String>> reference = id.getReference();
     ArrayList<ArrayList<String>> results = id.getResult();
     for (int i = 0; i < results.size(); i++) {
-      ArrayList<String> sentence = results.get(i);
+      ArrayList<String> sentence = reference.get(i);
+      ArrayList<String> modifiedSentence = results.get(i);
+
       for (int j = 0; j < sentence.size(); j++) {
         if (keywords.contains(sentence.get(j).toLowerCase())) {
-          String word = results.get(i).get(j);
+          String word = modifiedSentence.get(j);
           word = "KEYWORD_" + word + "_KEYWORD";
-          sentence.set(j, word);
+          modifiedSentence.set(j, word);
         }
       }
     }

@@ -3,8 +3,6 @@ package textdecorators.util;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import textdecorators._exceptions.EmptyInputFileException;
 import textdecorators._exceptions.InvalidWordException;
 
@@ -15,7 +13,6 @@ public class InputDetails implements FileDisplayInterface, StdoutDisplayInterfac
   private final String misspelledWordsFile;
   private final String keywordsFile;
   private final String outputFile;
-  private final Set<String> misspelledWords;
   private ArrayList<ArrayList<String>> result;
 
   public InputDetails(
@@ -26,7 +23,6 @@ public class InputDetails implements FileDisplayInterface, StdoutDisplayInterfac
     this.outputFile = outputFile;
     this.result = new ArrayList<>();
     this.reference = new ArrayList<>();
-    misspelledWords = new HashSet<>();
   }
 
   public void processFiles() throws IOException, EmptyInputFileException, InvalidWordException {
@@ -39,13 +35,13 @@ public class InputDetails implements FileDisplayInterface, StdoutDisplayInterfac
     while (line != null) {
       String[] sentences = line.split("[.]");
       for (String sentence : sentences) {
-        String[] words = sentence.split("[\\s]+");
+        String[] words = sentence.split("(\\s)");
 
         ArrayList<String> temp = new ArrayList<>();
         ArrayList<String> temp1 = new ArrayList<>();
 
         for (String word : words) {
-          if (word.matches("[a-zA-Z0-9,\\s]*")) {
+          if (word.matches("[a-zA-Z0-9,.]*")) {
             temp.add(word);
             temp1.add(word);
 
@@ -59,8 +55,6 @@ public class InputDetails implements FileDisplayInterface, StdoutDisplayInterfac
           }
         }
         reference.add(temp);
-        temp1.set(0, "BEGIN_SENTENCE__" + temp1.get(0));
-        temp1.set((temp1.size() - 1), temp1.get(temp1.size() - 1) + "__END_SENTENCE.");
         result.add(temp1);
       }
       line = inputFP.poll();

@@ -22,7 +22,12 @@ public class Driver {
      * argument value is not given java takes the default value specified in
      * build.xml. To avoid that, below condition is used
      */
-    if ((args.length != 5) || (args[0].equals("${input}")) || (args[1].equals("${output}"))) {
+    if ((args.length != 5)
+        || (args[0].equals("${input}"))
+        || (args[1].equals("${misspelled}"))
+        || (args[2].equals("${keywords}"))
+        || (args[3].equals("${output}"))
+        || (args[4].equals("${debug}"))) {
       System.err.printf(
           "Error: Incorrect number of arguments. Program accepts %d arguments (minimum).",
           REQUIRED_NUMBER_OF_CMDLINE_ARGS);
