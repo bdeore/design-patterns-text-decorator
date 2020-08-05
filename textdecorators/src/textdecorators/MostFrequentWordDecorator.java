@@ -20,8 +20,6 @@ public class MostFrequentWordDecorator extends AbstractTextDecorator {
   @Override
   public void processInputDetails() {
     String mostFrequentWord = findMostFrequentWord();
-    System.out.println();
-    System.out.println(mostFrequentWord);
     updateResults(mostFrequentWord);
 
     if (null != atd) {
@@ -30,16 +28,6 @@ public class MostFrequentWordDecorator extends AbstractTextDecorator {
   }
 
   private void updateResults(String mostFrequentWord) {
-    //    for (ArrayList<String> sentence : id.getResult()) {
-    //      for (int i = 0; i < sentence.size(); i++) {
-    //        String word = sentence.get(i);
-    //        if (word.toLowerCase().equals(mostFrequentWord)) {
-    //          word = "MOST_FREQUENT_" + word + "_MOST_FREQUENT";
-    //          sentence.set(i, word);
-    //        }
-    //      }
-    //    }
-
     ArrayList<ArrayList<String>> reference = id.getReference();
     ArrayList<ArrayList<String>> results = id.getResult();
 

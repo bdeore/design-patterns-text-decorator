@@ -35,7 +35,6 @@ public class Driver {
     }
 
     try {
-      System.out.println("hello world!");
 
       InputDetails inputD = new InputDetails(args[0], args[1], args[2], args[3]);
       inputD.processFiles();
@@ -49,9 +48,9 @@ public class Driver {
 
       mostFrequentWordDecorator.processInputDetails();
 
-      inputD.printResults();
-
+      inputD.writeToFile();
       inputD.write();
+
     } catch (InvalidPathException
         | FileNotFoundException
         | SecurityException

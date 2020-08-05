@@ -23,7 +23,7 @@ public class SpellCheckDecorator extends AbstractTextDecorator {
   @Override
   public void processInputDetails() {
 
-    makeKeywordSet();
+    makeSpellcheckSet();
     updateResults();
 
     if (null != atd) {
@@ -48,7 +48,7 @@ public class SpellCheckDecorator extends AbstractTextDecorator {
     }
   }
 
-  private void makeKeywordSet() {
+  private void makeSpellcheckSet() {
     try {
       FileProcessor keywordsFP = new FileProcessor(id.getMisspelledWordsFile());
       int count = 0;
@@ -78,7 +78,7 @@ public class SpellCheckDecorator extends AbstractTextDecorator {
     }
   }
 
-  public void printKeywordMap() {
+  public void printSpellcheckMap() {
     System.out.println();
     for (String keyword : this.misspelledWords) System.out.println(keyword);
   }

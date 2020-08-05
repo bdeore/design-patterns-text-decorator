@@ -6,6 +6,7 @@ import textdecorators._exceptions.EmptyInputFileException;
 
 /** Interface for File IO */
 public interface FileDisplayInterface {
-  void write(String output_filename)
+  void writeToFile()
       throws ArithmeticException, InvalidPathException, IOException, EmptyInputFileException;
 }
+
