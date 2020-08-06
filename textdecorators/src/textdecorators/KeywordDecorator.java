@@ -76,7 +76,7 @@ public class KeywordDecorator extends AbstractTextDecorator {
 
       while (line != null) {
         count++;
-        if (line.matches("[a-zA-Z0-9,\\s]*")) {
+        if (line.matches("[a-zA-Z0-9,.\\s]*")) {
           keywords.add(line.toLowerCase());
         } else {
           throw new InvalidWordException(

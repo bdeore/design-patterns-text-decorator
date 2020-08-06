@@ -76,7 +76,7 @@ public class SpellCheckDecorator extends AbstractTextDecorator {
 
       while (line != null) {
         count++;
-        if (line.matches("[a-zA-Z0-9,\\s]*")) {
+        if (line.matches("[a-zA-Z0-9,.\\s]*")) {
           misspelledWords.add(line.toLowerCase());
         } else {
           throw new InvalidWordException(
