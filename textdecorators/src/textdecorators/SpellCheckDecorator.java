@@ -9,17 +9,27 @@ import textdecorators._exceptions.InvalidWordException;
 import textdecorators.util.FileProcessor;
 import textdecorators.util.InputDetails;
 
+/* decorator that checks for words with spelling mistakes. misspelled words from misspelled.txt
+ * file are stored in a hashset to enable constant time lookup. also prefixes and suffixes words
+ * with SPELLCHECK on match */
 public class SpellCheckDecorator extends AbstractTextDecorator {
   private final AbstractTextDecorator atd;
   private final InputDetails id;
   private final Set<String> misspelledWords;
 
+  /**
+   * constructor for SpellCheckDecorator class
+   *
+   * @param atd AbstractTextDecorator to pass control forward
+   * @param id instance of input details class
+   */
   public SpellCheckDecorator(AbstractTextDecorator atd, InputDetails id) {
     this.atd = atd;
     this.id = id;
     this.misspelledWords = new HashSet<>();
   }
 
+  /** method to find misspelled words and prefix, suffix them with SPELLCHECK */
   @Override
   public void processInputDetails() {
 
@@ -31,6 +41,10 @@ public class SpellCheckDecorator extends AbstractTextDecorator {
     }
   }
 
+  /**
+   * method to update resultBuffer in InputDetails class. traverses whole arraylist and checks if
+   * word is contained in misspelledWords hashset. if found, prefixes and suffixes the word.
+   */
   private void updateResults() {
     ArrayList<ArrayList<String>> reference = id.getReference();
     ArrayList<ArrayList<String>> results = id.getResult();
@@ -48,6 +62,10 @@ public class SpellCheckDecorator extends AbstractTextDecorator {
     }
   }
 
+  /**
+   * method to make hashset containing misspelled words. file name for misspelled.txt file is read
+   * in from input details class instance.
+   */
   private void makeSpellcheckSet() {
     try {
       FileProcessor keywordsFP = new FileProcessor(id.getMisspelledWordsFile());
@@ -78,8 +96,26 @@ public class SpellCheckDecorator extends AbstractTextDecorator {
     }
   }
 
+  /** utility method to print all the misspelled words in hashset. useful for debugging */
   public void printSpellcheckMap() {
     System.out.println();
     for (String keyword : this.misspelledWords) System.out.println(keyword);
+  }
+
+  /**
+   * toString method for debugging
+   *
+   * @return String of debugging information
+   */
+  @Override
+  public String toString() {
+    return "SpellCheckDecorator{"
+        + "atd="
+        + atd
+        + ", id="
+        + id
+        + ", misspelledWords="
+        + misspelledWords
+        + '}';
   }
 }

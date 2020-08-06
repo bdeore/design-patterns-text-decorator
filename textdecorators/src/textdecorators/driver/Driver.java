@@ -12,6 +12,7 @@ import textdecorators._exceptions.EmptyInputFileException;
 import textdecorators._exceptions.InvalidWordException;
 import textdecorators.util.InputDetails;
 
+/** @author Bhagwan Deore */
 public class Driver {
 
   private static final int REQUIRED_NUMBER_OF_CMDLINE_ARGS = 5;
@@ -36,20 +37,42 @@ public class Driver {
 
     try {
 
+      /* class to to store, retrieve and update sentences. names for all the input files are
+       * are stored in this class and are accessed by appropriate decorators */
       InputDetails inputD = new InputDetails(args[0], args[1], args[2], args[3]);
+
+      /* utility method that populates the 2D arraylist and does some basic validations */
       inputD.processFiles();
 
+      /* decorator that adds BEGIN_SENTENCE__ and __END_SENTENCE to all the sentences. works
+       * on internal 2D arraylist */
       AbstractTextDecorator sentenceDecorator = new SentenceDecorator(null, inputD);
+
+      /* decorator that checks for words with spelling mistakes. misspelled words from misspelled.txt
+       * file are stored in a hashset to enable constant time lookup. also prefixes and suffixes words
+       * with SPELLCHECK on match */
       AbstractTextDecorator spellCheckDecorator =
           new SpellCheckDecorator(sentenceDecorator, inputD);
+
+      /* decorator that checks for keywords in keywords.txt file. upon reading the file, keywords are
+       * stored in a hashset to enable constant time lookup. also prefixes and suffixes words with
+       * KEYWORD on match */
       AbstractTextDecorator keywordDecorator = new KeywordDecorator(spellCheckDecorator, inputD);
+
+      /* decorator that determines the most frequent word in the input file. a hashmap is used to
+       * to store words as keys and frequency as value. also prefixes and suffixes words with
+       * MOST_FREQUENT on match */
       AbstractTextDecorator mostFrequentWordDecorator =
           new MostFrequentWordDecorator(keywordDecorator, inputD);
 
+      /* program execution starts from mostFrequentWordDecorator */
       mostFrequentWordDecorator.processInputDetails();
 
+      /* writes data stored in the buffer to output file*/
       inputD.writeToFile();
-      inputD.write();
+
+      /* writes data stored in the buffer to terminal*/
+      // inputD.write();
 
     } catch (InvalidPathException
         | FileNotFoundException
@@ -66,5 +89,15 @@ public class Driver {
       System.exit(1);
       // e.printStackTrace();
     }
+  }
+
+  /**
+   * toString method for debugging
+   *
+   * @return String of debugging information
+   */
+  @Override
+  public String toString() {
+    return "Driver Class";
   }
 }

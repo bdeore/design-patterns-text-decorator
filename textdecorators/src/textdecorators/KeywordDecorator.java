@@ -9,17 +9,27 @@ import textdecorators._exceptions.InvalidWordException;
 import textdecorators.util.FileProcessor;
 import textdecorators.util.InputDetails;
 
+/* decorator that checks for keywords in keywords.txt file. upon reading the file, keywords are
+ * stored in a hashset to enable constant time lookup. also prefixes and suffixes words with
+ * KEYWORD on match */
 public class KeywordDecorator extends AbstractTextDecorator {
   private final AbstractTextDecorator atd;
   private final InputDetails id;
   private final Set<String> keywords;
 
+  /**
+   * constructor for KeywordDecorator class
+   *
+   * @param atd AbstractTextDecorator to pass control forward
+   * @param id instance of input details class
+   */
   public KeywordDecorator(AbstractTextDecorator atd, InputDetails id) {
     this.atd = atd;
     this.id = id;
     this.keywords = new HashSet<>();
   }
 
+  /** method to find keywords and prefix, suffix them with KEYWORD */
   @Override
   public void processInputDetails() {
 
@@ -31,6 +41,10 @@ public class KeywordDecorator extends AbstractTextDecorator {
     }
   }
 
+  /**
+   * method to update resultBuffer in InputDetails class. traverses whole arraylist and checks if
+   * word is contained in keywords hashset. if found, prefixes and suffixes the word.
+   */
   private void updateResults() {
     ArrayList<ArrayList<String>> reference = id.getReference();
     ArrayList<ArrayList<String>> results = id.getResult();
@@ -48,6 +62,10 @@ public class KeywordDecorator extends AbstractTextDecorator {
     }
   }
 
+  /**
+   * method to make hashset containing keywords. file name for keyword.txt file is read in from
+   * input details class instance.
+   */
   private void makeKeywordSet() {
     try {
       FileProcessor keywordsFP = new FileProcessor(id.getKeywordsFile());
@@ -78,8 +96,19 @@ public class KeywordDecorator extends AbstractTextDecorator {
     }
   }
 
+  /** utility method to print all the keywords in hashset. useful for debugging */
   public void printKeywordMap() {
     System.out.println();
     for (String keyword : this.keywords) System.out.println(keyword);
+  }
+
+  /**
+   * toString method for debugging
+   *
+   * @return String of debugging information
+   */
+  @Override
+  public String toString() {
+    return "KeywordDecorator{" + "atd=" + atd + ", id=" + id + ", keywords=" + keywords + '}';
   }
 }

@@ -8,6 +8,12 @@ import java.util.ArrayList;
 import textdecorators._exceptions.EmptyInputFileException;
 import textdecorators._exceptions.InvalidWordException;
 
+/**
+ * class to to store, retrieve and update sentences. data structure: used 2D arraylist of words. 2
+ * 2D arraylists are created, one for storing results after processing is done by decorators and
+ * second for storing words for reference. this unaltered reference arraylist makes it easy to find
+ * words as they are unaltered rather than using indexOf everytime on updated sentences.
+ */
 public class InputDetails implements FileDisplayInterface, StdoutDisplayInterface {
 
   private final String inputFile;
@@ -15,8 +21,16 @@ public class InputDetails implements FileDisplayInterface, StdoutDisplayInterfac
   private final String misspelledWordsFile;
   private final String keywordsFile;
   private final String outputFile;
-  private ArrayList<ArrayList<String>> resultBuffer;
+  private final ArrayList<ArrayList<String>> resultBuffer;
 
+  /**
+   * constructor for InputDetails class.
+   *
+   * @param inputFile input file containing sentences
+   * @param misspelledWordsFile file containing misspelled words
+   * @param keywordsFile file containing keywords
+   * @param outputFile output filename to write results to
+   */
   public InputDetails(
       String inputFile, String misspelledWordsFile, String keywordsFile, String outputFile) {
     this.inputFile = inputFile;
@@ -27,6 +41,14 @@ public class InputDetails implements FileDisplayInterface, StdoutDisplayInterfac
     this.reference = new ArrayList<>();
   }
 
+  /**
+   * utility method to process sentences in input file. does some basic checks to ensure input file
+   * is not empty and sentences contain valid words. exceptions are handled by the calling method.
+   *
+   * @throws IOException exception in case file cannot be opened
+   * @throws EmptyInputFileException user defined exception thrown if input file is empty
+   * @throws InvalidWordException user defined exception thrown if invalid word is found
+   */
   public void processFiles() throws IOException, EmptyInputFileException, InvalidWordException {
     FileProcessor inputFP = new FileProcessor(inputFile);
     int count = 0;
@@ -63,30 +85,38 @@ public class InputDetails implements FileDisplayInterface, StdoutDisplayInterfac
     }
   }
 
+  /**
+   * getter for 2D result arraylist. sentences modified by decorators are stored in this arraylist
+   *
+   * @return 2D arraylist containing words
+   */
   public ArrayList<ArrayList<String>> getResult() {
     return resultBuffer;
   }
 
-  public void setResult(ArrayList<ArrayList<String>> result) {
-    this.resultBuffer = result;
-  }
-
-  public void printResults() {
-    for (ArrayList<String> sentence : resultBuffer) {
-      for (String word : sentence) {
-        System.out.print(" " + word);
-      }
-    }
-  }
-
+  /**
+   * getter for 2D reference arraylist. words in this arraylist are not altered.
+   *
+   * @return 2D arraylist containing words
+   */
   public ArrayList<ArrayList<String>> getReference() {
     return reference;
   }
 
+  /**
+   * getter for name of the file containing misspelled words
+   *
+   * @return string name of the file
+   */
   public String getMisspelledWordsFile() {
     return misspelledWordsFile;
   }
 
+  /**
+   * getter for name of the file containing keywords
+   *
+   * @return string name of the file
+   */
   public String getKeywordsFile() {
     return keywordsFile;
   }
@@ -153,5 +183,41 @@ public class InputDetails implements FileDisplayInterface, StdoutDisplayInterfac
         output_file.close();
       }
     }
+  }
+
+  /** utility method to print processed words from resultBuffer */
+  public void printResults() {
+    for (ArrayList<String> sentence : resultBuffer) {
+      for (String word : sentence) {
+        System.out.print(" " + word);
+      }
+    }
+  }
+
+  /**
+   * toString method for debugging
+   *
+   * @return String of debugging information
+   */
+  @Override
+  public String toString() {
+    return "InputDetails{"
+        + "inputFile='"
+        + inputFile
+        + '\''
+        + ", reference="
+        + reference
+        + ", misspelledWordsFile='"
+        + misspelledWordsFile
+        + '\''
+        + ", keywordsFile='"
+        + keywordsFile
+        + '\''
+        + ", outputFile='"
+        + outputFile
+        + '\''
+        + ", resultBuffer="
+        + resultBuffer
+        + '}';
   }
 }
